@@ -18,7 +18,7 @@ mkdir -p RPMS/x86_64
 
 yum --enablerepo=base install $BasePakg
 for i in $BasePakg; do 
-	cp $YumCacheBase/$i*rpm  src/RPMS/;
+	cp $YumCacheBase/$i*rpm  RPMS/x86_64;
 done
 
 
