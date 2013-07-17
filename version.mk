@@ -1,0 +1,6 @@
+ROLLNAME	= radius
+VERSION		= 1.0
+RELEASE		= 0
+COLOR		= burlywood
+
+REDHAT.ROOT	= $(CURDIR)

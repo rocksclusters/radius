@@ -1,0 +1,70 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+
+	<description>
+	Free Radius configuration with google opt
+	</description>
+
+	<copyright>
+	Copyright (c) 2000 - 2012 The Regents of the University of California.
+	All rights reserved. Rocks(r) v5.5/v6.0 www.rocksclusters.org
+	
+	</copyright>
+
+	<changelog>
+	$Log$
+	</changelog>
+
+	<package>freeradius</package>
+	<package>freeradius-utils</package>
+	<package>roll-radius-usersguide</package>
+
+<post>
+
+<file name="/etc/pam.d/radiusd">
+#%PAM-1.0
+#auth       include     password-auth
+#account    required    pam_nologin.so
+#account    include     password-auth
+#password   include     password-auth
+#session    include     password-auth
+
+
+auth required pam_google_authenticator.so forward_pass
+account required pam_unix.so use_first_pass
+</file>
+
+# make radius run as root
+# we need this to read user password
+/bin/sed -i 's/user =.*/user = root/g'  /etc/raddb/radiusd.conf
+/bin/sed -i 's/group =.*/group = root/g' /etc/raddb/radiusd.conf
+
+# fix folder permission since we run as root
+/bin/chown root:root /var/run/radiusd
+
+
+#Enable PAM
+<file name="/etc/raddb/users" mode="append">
+DEFAULT Group == "disabled", Auth-Type := Reject
+                Reply-Message = "Your account has been disabled."
+
+DEFAULT   Auth-Type := PAM
+</file>
+
+# fix site-enable to use pam for authentication
+rm /etc/raddb/sites-enabled/default
+<file name="/etc/raddb/sites-enabled/default">
+<eval>
+sed -e 's/#\tpam/pam/' /etc/raddb/sites-available/default
+</eval>
+</file>
+
+##the floder to hold the google keys
+#mkdir /export/google-authenticator-radius
+#chown radiusd:radiusd /export/google-authenticator-radius
+</post>
+
+
+</kickstart>
