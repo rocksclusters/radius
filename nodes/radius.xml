@@ -45,12 +45,24 @@ account required pam_unix.so use_first_pass
 /bin/chown root:root /var/run/radiusd
 
 
-#Enable PAM
+# Enable PAM login for users with group radiususers
+# make adminstrative login for switchadmin group
+# make basic login for switchlogin group
 <file name="/etc/raddb/users" mode="append">
+
 DEFAULT Group == "disabled", Auth-Type := Reject
                 Reply-Message = "Your account has been disabled."
 
-DEFAULT   Auth-Type := PAM
+DEFAULT Group == "switchadmin"
+	Service-Type = Administrative-User,
+	Fall-Through = Yes
+
+DEFAULT Group == "switchlogin"
+        Service-Type = Login-User,
+	Fall-Through = Yes
+
+DEFAULT  Group == "radiususers", Auth-Type := PAM
+
 </file>
 
 # fix site-enable to use pam for authentication
@@ -61,9 +73,20 @@ sed -e 's/#\tpam/pam/' /etc/raddb/sites-available/default
 </eval>
 </file>
 
-##the floder to hold the google keys
-#mkdir /export/google-authenticator-radius
-#chown radiusd:radiusd /export/google-authenticator-radius
+# turn on the server at boot time
+/sbin/chkconfig radiusd on
+
+# create our groups
+/usr/sbin/groupadd switchadmin
+/usr/sbin/groupadd switchlogin
+/usr/sbin/groupadd radiususers
+
+# disable raidususers from all login
+/bin/echo -e "# rocks\nauth        required      pam_listfile.so onerr=fail item=group sense=deny file=/etc/login.group.deny\n" \
+               | /bin/cat - /etc/pam.d/password-auth-ac > /tmp/password-auth-temp-file
+/bin/mv /tmp/password-auth-temp-file /etc/system-auth-ac
+echo radiususers > /etc/login.group.deny
+
 </post>
 
 
