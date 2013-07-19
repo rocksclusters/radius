@@ -7,20 +7,59 @@
 <title>Using the radius Roll</title>
 
 <para>
-Tutorials for using radius and its components are available
-from the <ulink url="http://link-here.html">
-radius web site</ulink>
+The RAIDUS roll preconfigures a set of unix groups which are used to manage 
+RDIUS users. </para>
+
+<para>
+All users which are part of the group radiususers are disable from local login
+on the machine and are used by the radiusserver to authenticate users.
+On some swtich if the user is part of switchadmin group it will get super
+users access to the switch, if it is switchlogin the user will only be 
+logged in as a standard users.
 </para>
 
-</section>
+<para>
+To create a radius user, it should be created suing the following command from 
+the root account:
+</para>
 
+<screen>
+useradd -m -g radiususers test
+passwd test
+</screen>
+
+<para>
+The user should be added to the group switchadmin editing the file /etc/group.
+If a user wants to use One Time Password he should:
+</para>
+
+
+<screen>
+su - test
+google-authenticator
+</screen>
+
+<para>
+and scan the bar code on the screen. When he logs in one of the switch he will use 
+his password and append at the end the one time code from his screen.
+If the user does not run the google-authenticator command it will use just 
+his own password to login.
+</para>
+
+<para>
+Some swtich support only 8 characters long password which means that if you are using 
+google OTP on top of that you are left with only a 2 character long password.
+</para>
+
+
+</section>
 
 
 <section id="example-switch" xreflabel="Example of switch configuration">
 <title>Example of switch configurations</title>
 
 <para>
-In this section we present some example of switch configuration to make the 
+In this section we present some example of switch configuration to make the
 switch authenticate with the radius server.
 </para>
 
