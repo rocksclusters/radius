@@ -15,4 +15,28 @@ radius web site</ulink>
 </section>
 
 
+
+<section id="example-switch" xreflabel="Example of switch configuration">
+<title>Example of switch configurations</title>
+
+
+
+<para>
+In this section we present some example of switch configuration to make the 
+switch authenticate with the radius server.
+</para>
+
+<para>
+The swtich SMC TigerSwitch 8624 T uses the following directive.
+</para>
+
+<screen>
+radius-server host RADIUS_server_password
+radius-server key NAS_password
+authentication login radius local
+</screen>
+
+</section>
+
+
 </chapter>
