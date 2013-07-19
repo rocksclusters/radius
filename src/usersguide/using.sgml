@@ -19,8 +19,6 @@ radius web site</ulink>
 <section id="example-switch" xreflabel="Example of switch configuration">
 <title>Example of switch configurations</title>
 
-
-
 <para>
 In this section we present some example of switch configuration to make the 
 switch authenticate with the radius server.
@@ -44,6 +42,18 @@ The swtich SMC TigerSwitch 8748L2 uses the following (newer directive) directive
 radius-server 1 host RADIUS_server_password
 radius-server key NAS_password
 authentication login radius local
+</screen>
+
+
+<para>
+The Switch Arista DCS-7148S-R can be configured for Radius with the following command. (Imp! It does not enforce authorization level, which mean that if the radiususers is in the group switchlogin it will have enable access) (ip route 0.0.0.0/0 gateway_IP to set the default gateway).
+</para>
+
+<screen>
+radius-server key 0 yoursecretkey
+radius-server host host_server
+
+aaa authentication login default group radius local
 </screen>
 
 </section>
