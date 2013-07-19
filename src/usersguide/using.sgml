@@ -36,6 +36,16 @@ radius-server key NAS_password
 authentication login radius local
 </screen>
 
+<para>
+The swtich SMC TigerSwitch 8748L2 uses the following (newer directive) directive (its firmware supports multiple RADIUS servers).
+</para>
+
+<screen>
+radius-server 1 host RADIUS_server_password
+radius-server key NAS_password
+authentication login radius local
+</screen>
+
 </section>
 
 
