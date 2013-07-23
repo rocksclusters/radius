@@ -56,6 +56,19 @@ is configured with a longer password then it will not be able to authenticate on
 switches.
 </para>
 
+<para>
+Every client should be added to the /etc/raddb/clients.conf before it can work.
+The file is fairly simple, in the following example you can see a typical entry,
+which authorize all the clients with IP 10.1.x.x and secret test123.
+</para>
+
+<screen>
+client hermes {
+	secret	    = test123
+	ipaddr	    = 10.1.1.0
+	netmask     = 24
+}
+</screen>
 
 </section>
 
