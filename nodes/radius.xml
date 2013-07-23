@@ -53,8 +53,14 @@ account required pam_unix.so use_first_pass
 DEFAULT Group == "disabled", Auth-Type := Reject
                 Reply-Message = "Your account has been disabled."
 
+# to differentiate group of users on login you should use
+# huntgroups
+# http://freeradius.1045715.n5.nabble.com/same-username-different-password-on-different-NAS-td3797773.html
+
+#shell:priv should work on cisco client
 DEFAULT Group == "switchadmin"
 	Service-Type = Administrative-User,
+	cisco-avpair = "shell:priv-lvl=15",
 	Fall-Through = Yes
 
 DEFAULT Group == "switchlogin"
