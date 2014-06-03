@@ -36,8 +36,10 @@ is an example for a testuser
     su - testuser
     google-authenticator
     exit
+    usermod -a -G google-otp testuser
     mv ~test/.google-authenticator /export/google-authenticator/testuser
     chown root.root /export/google-authenticator/testuser
+    
 
 The user shoudl scan the bar code on the screen when google-authenticator presents the QR code. 
 When he logs in one of the switch he should
