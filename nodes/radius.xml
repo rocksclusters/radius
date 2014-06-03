@@ -32,7 +32,8 @@
 #session    include     password-auth
 
 
-auth required pam_google_authenticator.so forward_pass
+auth required pam_google_authenticator.so user=root secret=/export/google-authenticator/${USER} forward_pass
+auth include  password-auth
 account required pam_unix.so use_first_pass
 </file>
 
@@ -87,7 +88,7 @@ sed -e 's/#\tpam/pam/' /etc/raddb/sites-available/default
 /usr/sbin/groupadd switchlogin
 /usr/sbin/groupadd radiususers
 
-# disable raidususers from all login
+# disable radiususers from all login
 /bin/echo -e "# rocks\nauth        required      pam_listfile.so onerr=fail item=group sense=deny file=/etc/login.group.deny\n" \
                | /bin/cat - /etc/pam.d/password-auth-ac > /tmp/password-auth-temp-file
 /bin/mv /tmp/password-auth-temp-file /etc/system-auth-ac
