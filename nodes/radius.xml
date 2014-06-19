@@ -32,7 +32,7 @@
 #session    include     password-auth
 
 
-auth required pam_google_authenticator.so user=root secret=/export/google-authenticator/${USER} forward_pass
+auth required pam_google_authenticator.so null=ok user=root secret=/export/google-authenticator/${USER} forward_pass
 auth include  password-auth
 account required pam_unix.so use_first_pass
 </file>
